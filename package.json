@@ -1,0 +1,48 @@
+{
+  "name": "browser-compatibility-checker",
+  "displayName": "browser-compatibility-checker",
+  "description": "Checks compatibility of your frontend code with modern browsers",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "browser-compatibility-checker.checker",
+        "title": "Enable: Browser compatibility check"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "format": "npx prettier . --write",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.56.0",
+    "prettier": "3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@mdn/browser-compat-data": "^5.5.8",
+    "browserslist": "^4.22.3",
+    "minimatch": "^9.0.3"
+  }
+}
