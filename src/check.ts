@@ -27,6 +27,10 @@ const BROWSER_NAMES: { [key: string]: string } = {
 
 const KEY_BROWSERS = ["chrome", "edge", "firefox", "opera", "safari"];
 
+const CSS_GLOB = "*.{css,scss}";
+const HTML_GLOB = "*.html";
+const JS_GLOB = "*.{ts,js}";
+
 function getCurrentBrowserVersions() {
   const currentVersions = browserslist(["last 1 versions", "not dead"]);
   return currentVersions
@@ -56,7 +60,10 @@ function processCompatDataObject(
   const compatIssues: { [name: string]: CompatIssue } = {};
   for (const prop of Object.keys(data)) {
     let hasIssue = false;
-    const { status, support } = data[prop].__compat!;
+    if(!data[prop].__compat){
+      continue;
+    }
+    const { status, support, mdn_url } = data[prop].__compat!;
     const itemCompatIssues: CompatIssue = {
       deprecated: false,
       browserIssues: [],
@@ -79,6 +86,7 @@ function processCompatDataObject(
       }
     }
     if (hasIssue) {
+      itemCompatIssues.mdn_url = mdn_url;
       compatIssues[`${prefix}${prop}${suffix}`] = itemCompatIssues;
     }
   }
@@ -97,7 +105,11 @@ export function processCompatData() {
     ...processCompatDataObject(bcd.html.elements, "<"),
     ...processCompatDataObject(bcd.html.global_attributes, "", "="),
   }
-  return { "**/*.css": cssCompatIssues, "**/*.html": htmlCompatIssues };
+  const jsCompatIssues = {
+    ...processCompatDataObject(bcd.javascript.builtins, "", "\\("),
+    ...processCompatDataObject(bcd.api, "", "\\("),
+  }
+  return { [CSS_GLOB]: cssCompatIssues, [HTML_GLOB]: htmlCompatIssues, [JS_GLOB]: jsCompatIssues };
 }
 
 export function getMessage(name: string, issues: CompatIssue) {

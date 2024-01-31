@@ -14,11 +14,7 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
     const text = doc.getText();
     const diagnostics: vscode.Diagnostic[] = [];
     selectorsToWarn.forEach((selector) => {
-      const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regex = new RegExp(
-        `(?:^|[\\s,\\[\\{;:])${escapedSelector}(?:(?![\\w\\d])|$)`,
-        "g",
-      );
+      const regex = new RegExp(/^[a-zA-Z]/.test(selector) ? `(?:^|\\s)${selector}` : selector, 'g');
       const { message, level } = getMessage(selector, issues[selector]);
       let match;
       while ((match = regex.exec(text)) !== null) {
