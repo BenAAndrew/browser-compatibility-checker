@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
-import { processCompatData, getMessage, CompatIssue } from "./check";
+import { processCompatData, CompatIssue } from "./compat-issues";
 import { minimatch } from "minimatch";
+import { findIssues } from "./check";
 
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
@@ -9,20 +10,13 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
   if (collections[uri.toString()]) {
     collections[uri.toString()].delete(uri);
   }
-  const selectorsToWarn = Object.keys(issues);
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
-    const diagnostics: vscode.Diagnostic[] = [];
-    selectorsToWarn.forEach((selector) => {
-      const regex = new RegExp(/^[a-zA-Z]/.test(selector) ? `(?:^|\\s)${selector}` : selector, 'g');
-      const { message, level } = getMessage(selector, issues[selector]);
-      let match;
-      while ((match = regex.exec(text)) !== null) {
-        const position = doc.positionAt(match.index + 2);
-        const range = new vscode.Range(position, position);
-        const diagnostic = new vscode.Diagnostic(range, message, level);
-        diagnostics.push(diagnostic);
-      }
+    const matches = findIssues(text, issues);
+    const diagnostics = matches.map(({index, message, isError}) => {
+      const position = doc.positionAt(index);
+      const range = new vscode.Range(position, position);
+      return new vscode.Diagnostic(range, message, isError ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning);
     });
     const ws = vscode.workspace.getWorkspaceFolder(uri);
     const collection = vscode.languages.createDiagnosticCollection(
