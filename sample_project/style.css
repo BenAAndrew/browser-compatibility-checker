@@ -1,33 +1,34 @@
 body {
-    /* Following should be OK */
-    background: #ffffff;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    /* Following should have issues */
-    -webkit-mask-repeat-y: min(123);
-    text-size-adjust: none;
-    -moz-float-edge: border-box;
-    width: sqrt(9);
+  /* Following should be OK */
+  background: #ffffff;
+  font-family: "Source Sans Pro", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  /* Following should have issues */
+  -webkit-mask-repeat-y: min(123);
+  text-size-adjust: none;
+  -moz-float-edge: border-box;
+  width: sqrt(9);
 }
 
 /* Following should be OK */
 @font-face {
-    font-family: 'Source Sans Pro';
-    src: url('');
+  font-family: "Source Sans Pro";
+  src: url("");
 }
 
 /* Following should have issues */
-@document url("https://www.example.com/") {
-    h1 {
-        color: green;
-    }
+@document url("https://www.example.com/")
+{
+  h1 {
+    color: green;
+  }
 }
 
 textarea:blank {
-    border: 3px solid red;
+  border: 3px solid red;
 }
 
 :-moz-broken {
-    padding: 8px;
+  padding: 8px;
 }

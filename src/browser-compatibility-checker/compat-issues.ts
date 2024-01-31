@@ -25,7 +25,7 @@ function processCompatDataObject(
     const itemCompatIssues: CompatIssue = {
       deprecated: false,
       browserIssues: [],
-      mdn_url
+      mdn_url,
     };
     if (status?.deprecated) {
       itemCompatIssues.deprecated = true;
@@ -34,7 +34,9 @@ function processCompatDataObject(
       for (const [name, data] of Object.entries(support)) {
         const isSupported = !Array.isArray(data)
           ? data.version_added && !data.version_last && !data.flags
-          : data.some((obj) => obj.version_added && !obj.version_last && !obj.flags);
+          : data.some(
+              (obj) => obj.version_added && !obj.version_last && !obj.flags,
+            );
         if (!isSupported) {
           itemCompatIssues.browserIssues = [
             ...itemCompatIssues.browserIssues,
@@ -61,10 +63,14 @@ export function processCompatData() {
   const htmlCompatIssues = {
     ...processCompatDataObject(bcd.html.elements, "<"),
     ...processCompatDataObject(bcd.html.global_attributes, "", "="),
-  }
+  };
   const jsCompatIssues = {
     ...processCompatDataObject(bcd.javascript.builtins, "", "\\("),
     ...processCompatDataObject(bcd.api, "", "\\("),
-  }
-  return { [CSS_GLOB]: cssCompatIssues, [HTML_GLOB]: htmlCompatIssues, [JS_GLOB]: jsCompatIssues };
+  };
+  return {
+    [CSS_GLOB]: cssCompatIssues,
+    [HTML_GLOB]: htmlCompatIssues,
+    [JS_GLOB]: jsCompatIssues,
+  };
 }

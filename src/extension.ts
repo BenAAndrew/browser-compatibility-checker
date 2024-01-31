@@ -1,5 +1,9 @@
 import * as vscode from "vscode";
-import { findIssues, compatIssues, CompatIssue } from "./browser-compatibility-checker";
+import {
+  findIssues,
+  compatIssues,
+  CompatIssue,
+} from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
 
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
@@ -12,10 +16,16 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
     const matches = findIssues(text, issues);
-    const diagnostics = matches.map(({index, message, isError}) => {
+    const diagnostics = matches.map(({ index, message, isError }) => {
       const position = doc.positionAt(index);
       const range = new vscode.Range(position, position);
-      return new vscode.Diagnostic(range, message, isError ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning);
+      return new vscode.Diagnostic(
+        range,
+        message,
+        isError
+          ? vscode.DiagnosticSeverity.Error
+          : vscode.DiagnosticSeverity.Warning,
+      );
     });
     const ws = vscode.workspace.getWorkspaceFolder(uri);
     const collection = vscode.languages.createDiagnosticCollection(
