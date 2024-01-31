@@ -1,4 +1,3 @@
-import { DiagnosticSeverity } from "vscode";
 import { CompatIssue } from "./compat-issues";
 
 const BROWSER_NAMES: { [key: string]: string } = {

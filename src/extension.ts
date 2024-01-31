@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
-import { processCompatData, CompatIssue } from "./compat-issues";
+import { findIssues, compatIssues, CompatIssue } from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
-import { findIssues } from "./check";
 
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
@@ -28,8 +27,6 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const compatIssues = processCompatData();
-
   let disposable = vscode.commands.registerCommand(
     "browser-compatibility-checker.checker",
     () => {
