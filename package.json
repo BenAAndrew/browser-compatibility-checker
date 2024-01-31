@@ -26,7 +26,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "format": "npx prettier . --write",
-    "test": "vscode-test"
+    "test": "ts-mocha 'src/browser-compatibility-checker/test/*.spec.ts'",
+    "extension-test": "vscode-test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
@@ -37,7 +38,10 @@
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9",
     "eslint": "^8.56.0",
+    "mocha": "^10.2.0",
     "prettier": "3.2.4",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {

@@ -10,7 +10,7 @@ export type CompatIssue = {
   mdn_url?: string;
 };
 
-function processCompatDataObject(
+export function processCompatDataObject(
   data: Identifier,
   prefix: string = "",
   suffix: string = "",
