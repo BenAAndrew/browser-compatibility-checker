@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@mdn/browser-compat-data": "^5.5.8",
-    "browserslist": "^4.22.3",
     "minimatch": "^9.0.3"
   }
 }

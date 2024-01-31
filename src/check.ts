@@ -1,14 +1,5 @@
-import { DiagnosticSeverity, Selection } from "vscode";
-import bcd, { CompatData, Identifier } from "@mdn/browser-compat-data";
-import browserslist from "browserslist";
-
-const BROWSER_RENAMING: { [key: string]: string } = {
-  and_chr: "chrome_android",
-  and_ff: "firefox_android",
-  samsung: "samsunginternet_android",
-  ios_saf: "safari_ios",
-  op_mob: "opera_android",
-};
+import { DiagnosticSeverity } from "vscode";
+import bcd, { Identifier } from "@mdn/browser-compat-data";
 
 const BROWSER_NAMES: { [key: string]: string } = {
   chrome: "Chrome",
@@ -30,21 +21,6 @@ const KEY_BROWSERS = ["chrome", "edge", "firefox", "opera", "safari"];
 const CSS_GLOB = "*.{css,scss}";
 const HTML_GLOB = "*.html";
 const JS_GLOB = "*.{ts,js}";
-
-function getCurrentBrowserVersions() {
-  const currentVersions = browserslist(["last 1 versions", "not dead"]);
-  return currentVersions
-    .map((browser) => {
-      const [name, version] = browser.split(" ");
-      const correctName = BROWSER_RENAMING[name] || name;
-      return { [correctName]: parseFloat(version) };
-    })
-    .reduce((a, c) => {
-      return { ...a, ...c };
-    }, {});
-}
-
-const currentVersions = getCurrentBrowserVersions();
 
 export type CompatIssue = {
   deprecated: boolean;
