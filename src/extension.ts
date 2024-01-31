@@ -16,7 +16,7 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
     selectorsToWarn.forEach((selector) => {
       const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(
-        `(?:^|[\\s,\\[\\{;:])${escapedSelector}(?:[\\s\\[\\{;:]|$)`,
+        `(?:^|[\\s,\\[\\{;:])${escapedSelector}(?:(?![\\w\\d])|$)`,
         "g",
       );
       const { message, level } = getMessage(selector, issues[selector]);

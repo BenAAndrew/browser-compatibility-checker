@@ -67,8 +67,8 @@ function processCompatDataObject(
     } else {
       for (const [name, data] of Object.entries(support)) {
         const isSupported = !Array.isArray(data)
-          ? data.version_added && !data.version_last
-          : data.some((obj) => obj.version_added && !obj.version_last);
+          ? data.version_added && !data.version_last && !data.flags
+          : data.some((obj) => obj.version_added && !obj.version_last && !obj.flags);
         if (!isSupported) {
           itemCompatIssues.browserIssues = [
             ...itemCompatIssues.browserIssues,
@@ -86,14 +86,18 @@ function processCompatDataObject(
 }
 
 export function processCompatData() {
-  console.log(bcd.css);
+  console.log(bcd);
   const cssCompatIssues = {
     ...processCompatDataObject(bcd.css["at-rules"], "@"),
     ...processCompatDataObject(bcd.css.properties, "", ":"),
     ...processCompatDataObject(bcd.css.selectors, ":"),
     ...processCompatDataObject(bcd.css.types, "", "\\("),
   };
-  return { "**/*.css": cssCompatIssues };
+  const htmlCompatIssues = {
+    ...processCompatDataObject(bcd.html.elements, "<"),
+    ...processCompatDataObject(bcd.html.global_attributes, "", "="),
+  }
+  return { "**/*.css": cssCompatIssues, "**/*.html": htmlCompatIssues };
 }
 
 export function getMessage(name: string, issues: CompatIssue) {
