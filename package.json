@@ -3,6 +3,10 @@
   "displayName": "Browser compatibility checker",
   "description": "Checks compatibility of your frontend code with modern browsers",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenAAndrew/browser-compatibility-checker.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
