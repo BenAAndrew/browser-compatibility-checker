@@ -94,6 +94,8 @@ describe("Find Issues", function () {
       {
         "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
       },
+      ['chrome'],
+      true
     );
     assert.deepStrictEqual(issues, [
       {
@@ -103,5 +105,16 @@ describe("Find Issues", function () {
           "-webkit-mask-repeat-y may not be supported in the following browsers: IE",
       },
     ]);
+  });
+  it("Ignore excluded browsers", function () {
+    const issues = findIssues(
+      readFileSync("sample_project/style.css", "utf8"),
+      {
+        "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
+      },
+      ['chrome'],
+      false
+    );
+    assert.deepStrictEqual(issues, []);
   });
 });

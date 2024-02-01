@@ -1,6 +1,6 @@
 {
   "name": "browser-compatibility-checker",
-  "displayName": "browser-compatibility-checker",
+  "displayName": "Browser compatibility checker",
   "description": "Checks compatibility of your frontend code with modern browsers",
   "version": "0.0.1",
   "engines": {
@@ -23,7 +23,27 @@
         "command": "browser-compatibility-checker.current-file",
         "title": "Browser compatibility check: Scan current file"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Browser compatibility checker",
+      "properties": {
+        "browser-compatibility-checker.enableOnChange": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable this extension on start and file change"
+        },
+        "browser-compatibility-checker.browserList": {
+          "type": "array",
+          "default": ["chrome", "edge", "firefox", "opera", "safari", "ie", "chrome_android", "firefox_android", "opera_android", "safari_ios", "samsunginternet_android", "webview_android"],
+          "description": "Which browsers to check compatibility for"
+        },
+        "browser-compatibility-checker.warnForOtherBrowsers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a warning for issues with browsers not in the browser list"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

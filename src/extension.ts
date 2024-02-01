@@ -8,14 +8,14 @@ import { minimatch } from "minimatch";
 
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
-function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
+function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
   const uri = vscode.Uri.file(file.path);
   if (collections[uri.toString()]) {
     collections[uri.toString()].delete(uri);
   }
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
-    const matches = findIssues(text, issues);
+    const matches = findIssues(text, issues, browsersToCheck, warnForOtherBrowsers);
     const diagnostics = matches.map(({ index, message, isError }) => {
       const position = doc.positionAt(index);
       const range = new vscode.Range(position, position);
@@ -36,30 +36,32 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
   });
 }
 
-function scanFiles(){
+function scanFiles(browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true){
   for (const [fileRegex, issues] of Object.entries(compatIssues)) {
     vscode.workspace.findFiles(fileRegex).then((files) => {
-      files.forEach((file) => checkFile(file, issues));
+      files.forEach((file) => checkFile(file, issues, browsersToCheck, warnForOtherBrowsers));
     });
   }
 }
 
-function scanFile(document: vscode.TextDocument) {
+function scanFile(document: vscode.TextDocument, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
   for (const [fileRegex, issues] of Object.entries(compatIssues)) {
     if (minimatch(document.fileName, fileRegex, { nocase: true })) {
-      checkFile(document.uri, issues);
+      checkFile(document.uri, issues, browsersToCheck, warnForOtherBrowsers);
     }
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  scanFiles();
+  const config = vscode.workspace.getConfiguration('browser-compatibility-checker');
+  if(config.enableOnChange){
+    scanFiles(config.browserList, config.warnForOtherBrowsers);
+  }
   
   const checkAllFiles = vscode.commands.registerCommand(
     "browser-compatibility-checker.all-files",
-    scanFiles,
+    () => scanFiles(config.browserList, config.warnForOtherBrowsers),
   );
-
   context.subscriptions.push(checkAllFiles);
 
   const checkCurrentFiles = vscode.commands.registerCommand(
@@ -67,18 +69,19 @@ export function activate(context: vscode.ExtensionContext) {
     () => {
       const editor = vscode.window.activeTextEditor;
       if (editor) {
-        scanFile(editor.document);
+        scanFile(editor.document, config.browserList, config.warnForOtherBrowsers);
       }
     },
   );
-
   context.subscriptions.push(checkCurrentFiles);
 
-  vscode.workspace.onDidChangeTextDocument((event) => {
-    if (event.document.uri.scheme === "file") {
-      scanFile(event.document)
-    }
-  });
+  if(config.enableOnChange){
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      if (event.document.uri.scheme === "file") {
+        scanFile(event.document, config.browserList, config.warnForOtherBrowsers);
+      }
+    });
+  }
 }
 
 export function deactivate() {}
