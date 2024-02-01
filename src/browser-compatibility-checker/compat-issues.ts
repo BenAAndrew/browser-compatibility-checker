@@ -1,8 +1,8 @@
 import bcd, { Identifier } from "@mdn/browser-compat-data";
 
-const CSS_GLOB = "*.{css,scss}";
-const HTML_GLOB = "*.html";
-const JS_GLOB = "*.{ts,js}";
+const CSS_GLOB = "**/*.{css,scss}";
+const HTML_GLOB = "**/*.html";
+const JS_GLOB = "**/*.{ts,js}";
 
 export type CompatIssue = {
   deprecated: boolean;

@@ -96,9 +96,6 @@ async function getFileIssues(filename: string) {
 
 suite("Extension Test Suite", () => {
   test("Run Compatibility Checker", async () => {
-    await vscode.commands.executeCommand(
-      "browser-compatibility-checker.checker",
-    );
     await sleep(1000);
 
     for (const [filename, expectedIssues] of Object.entries(filesAndIssues)) {

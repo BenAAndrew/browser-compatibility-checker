@@ -36,27 +36,47 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }) {
   });
 }
 
+function scanFiles(){
+  for (const [fileRegex, issues] of Object.entries(compatIssues)) {
+    vscode.workspace.findFiles(fileRegex).then((files) => {
+      files.forEach((file) => checkFile(file, issues));
+    });
+  }
+}
+
+function scanFile(document: vscode.TextDocument) {
+  for (const [fileRegex, issues] of Object.entries(compatIssues)) {
+    if (minimatch(document.fileName, fileRegex, { nocase: true })) {
+      checkFile(document.uri, issues);
+    }
+  }
+}
+
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
-    "browser-compatibility-checker.checker",
+  scanFiles();
+  
+  const checkAllFiles = vscode.commands.registerCommand(
+    "browser-compatibility-checker.all-files",
+    scanFiles,
+  );
+
+  context.subscriptions.push(checkAllFiles);
+
+  const checkCurrentFiles = vscode.commands.registerCommand(
+    "browser-compatibility-checker.current-file",
     () => {
-      for (const [fileRegex, issues] of Object.entries(compatIssues)) {
-        vscode.workspace.findFiles(fileRegex).then((files) => {
-          files.forEach((file) => checkFile(file, issues));
-        });
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        scanFile(editor.document);
       }
     },
   );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(checkCurrentFiles);
 
   vscode.workspace.onDidChangeTextDocument((event) => {
     if (event.document.uri.scheme === "file") {
-      for (const [fileRegex, issues] of Object.entries(compatIssues)) {
-        if (minimatch(event.document.fileName, fileRegex, { nocase: true })) {
-          checkFile(event.document.uri, issues);
-        }
-      }
+      scanFile(event.document)
     }
   });
 }

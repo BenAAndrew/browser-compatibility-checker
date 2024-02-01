@@ -9,13 +9,19 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "browser-compatibility-checker.checker",
-        "title": "Enable: Browser compatibility check"
+        "command": "browser-compatibility-checker.all-files",
+        "title": "Browser compatibility check: Scan all files"
+      },
+      {
+        "command": "browser-compatibility-checker.current-file",
+        "title": "Browser compatibility check: Scan current file"
       }
     ]
   },
