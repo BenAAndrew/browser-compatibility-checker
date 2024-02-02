@@ -4,7 +4,7 @@
   "description": "Checks compatibility of your frontend code with modern browsers",
   "publisher": "benandrew",
   "icon": "icon.png",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/BenAAndrew/browser-compatibility-checker.git"
@@ -85,7 +85,8 @@
     "lint": "eslint src --ext ts",
     "format": "npx prettier . --write",
     "test": "mocha 'out/browser-compatibility-checker/test/*.spec.js'",
-    "extension-test": "vscode-test"
+    "extension-test": "vscode-test",
+    "publish": "vsce package && vsce publish"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
