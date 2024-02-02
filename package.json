@@ -2,6 +2,8 @@
   "name": "browser-compatibility-checker",
   "displayName": "Browser compatibility checker",
   "description": "Checks compatibility of your frontend code with modern browsers",
+  "publisher": "benandrew",
+  "icon": "icon.png",
   "version": "0.0.1",
   "repository": {
     "type": "git",
