@@ -68,6 +68,11 @@
             "**/.**/**"
           ],
           "description": "Glob paths to exclude from scanning"
+        },
+        "browser-compatibility-checker.useError": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use a severity of 'error' for each problem (otherwise uses 'warning')"
         }
       }
     }

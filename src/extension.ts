@@ -11,11 +11,12 @@ const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 type Config = {
   enableOnChange: boolean,
   warnForOtherBrowsers: boolean,
+  useError: boolean,
   browsersToCheck: string[],
   foldersToIgnore: string[],
 };
 
-function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { browsersToCheck, foldersToIgnore, warnForOtherBrowsers }: Config) {
+function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { browsersToCheck, foldersToIgnore, warnForOtherBrowsers, useError }: Config) {
   const uri = vscode.Uri.file(file.path);
   if (collections[uri.toString()]) {
     collections[uri.toString()].delete(uri);
@@ -32,7 +33,7 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { b
       const diagnostic = new vscode.Diagnostic(
         range,
         message,
-        isError
+        isError && useError
           ? vscode.DiagnosticSeverity.Error
           : vscode.DiagnosticSeverity.Warning,
       );
@@ -77,6 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
   const config: Config = {
     enableOnChange: vscodeConfig.enableOnChange,
     warnForOtherBrowsers: vscodeConfig.warnForOtherBrowsers,
+    useError: vscodeConfig.useError,
     browsersToCheck: vscodeConfig.browsersToCheck,
     foldersToIgnore: vscodeConfig.foldersToIgnore
   };
