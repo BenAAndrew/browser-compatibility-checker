@@ -22,3 +22,7 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 1. `npm install`
 2. `npm run watch`
 3. Open VSCode & press F5 to run the extension
+
+## Disclaimer
+This tool is not a replacement for cross-browser testing and cannot verify how elements will perform on various browsers.
+Elements which are not flagged as incompatible may still have issues on some browsers.
