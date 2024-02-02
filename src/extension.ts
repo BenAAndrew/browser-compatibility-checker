@@ -8,10 +8,20 @@ import { minimatch } from "minimatch";
 const compatIssues: { [path: string]: { [key: string]: CompatIssue} } = require('./browser-compatibility-checker/compat-issues.json');
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
-function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
+type Config = {
+  enableOnChange: boolean,
+  warnForOtherBrowsers: boolean,
+  browsersToCheck: string[],
+  foldersToIgnore: string[],
+};
+
+function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { browsersToCheck, foldersToIgnore, warnForOtherBrowsers }: Config) {
   const uri = vscode.Uri.file(file.path);
   if (collections[uri.toString()]) {
     collections[uri.toString()].delete(uri);
+  }
+  if(foldersToIgnore.some(folder => minimatch(file.path, folder, { nocase: true }))){
+    return;
   }
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
@@ -36,31 +46,38 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, bro
   });
 }
 
-function scanFiles(browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true){
+function scanFiles(config: Config){
   for (const [fileRegex, issues] of Object.entries(compatIssues)) {
     vscode.workspace.findFiles(fileRegex).then((files) => {
-      files.forEach((file) => checkFile(file, issues, browsersToCheck, warnForOtherBrowsers));
+      files.forEach((file) => checkFile(file, issues, config));
     });
   }
 }
 
-function scanFile(document: vscode.TextDocument, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
+function scanFile(document: vscode.TextDocument, config: Config) {
   for (const [fileRegex, issues] of Object.entries(compatIssues)) {
     if (minimatch(document.fileName, fileRegex, { nocase: true })) {
-      checkFile(document.uri, issues, browsersToCheck, warnForOtherBrowsers);
+      checkFile(document.uri, issues, config);
     }
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const config = vscode.workspace.getConfiguration('browser-compatibility-checker');
+  const vscodeConfig = vscode.workspace.getConfiguration('browser-compatibility-checker');
+  const config: Config = {
+    enableOnChange: vscodeConfig.enableOnChange,
+    warnForOtherBrowsers: vscodeConfig.warnForOtherBrowsers,
+    browsersToCheck: vscodeConfig.browsersToCheck,
+    foldersToIgnore: vscodeConfig.foldersToIgnore
+  };
+
   if(config.enableOnChange){
-    scanFiles(config.browserList, config.warnForOtherBrowsers);
+    scanFiles(config);
   }
   
   const checkAllFiles = vscode.commands.registerCommand(
     "browser-compatibility-checker.all-files",
-    () => scanFiles(config.browserList, config.warnForOtherBrowsers),
+    () => scanFiles(config),
   );
   context.subscriptions.push(checkAllFiles);
 
@@ -69,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
     () => {
       const editor = vscode.window.activeTextEditor;
       if (editor) {
-        scanFile(editor.document, config.browserList, config.warnForOtherBrowsers);
+        scanFile(editor.document, config);
       }
     },
   );
@@ -78,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
   if(config.enableOnChange){
     vscode.workspace.onDidChangeTextDocument((event) => {
       if (event.document.uri.scheme === "file") {
-        scanFile(event.document, config.browserList, config.warnForOtherBrowsers);
+        scanFile(event.document, config);
       }
     });
   }

@@ -47,6 +47,11 @@
           "type": "boolean",
           "default": true,
           "description": "Show a warning for issues with browsers not in the browser list"
+        },
+        "browser-compatibility-checker.foldersToIgnore": {
+          "type": "array",
+          "default": ["**/node_modules/**", "**/.**/**"],
+          "description": "Glob paths to exclude from scanning"
         }
       }
     }
