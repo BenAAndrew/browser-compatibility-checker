@@ -8,7 +8,7 @@ export function findIssues(
   warnForOtherBrowsers: boolean = true
 ) {
   const selectorsToWarn = Object.keys(issues);
-  const matches: { index: number; message: string; isError: boolean }[] = [];
+  const matches: { index: number; message: string; isError: boolean, mdnUrl?: string }[] = [];
   selectorsToWarn.forEach((selector) => {
     const regex = new RegExp(
       /^[a-zA-Z]/.test(selector) ? `(?:^|\\s)${selector}` : selector,
@@ -18,7 +18,7 @@ export function findIssues(
     if(message){
       let match;
       while ((match = regex.exec(text)) !== null) {
-        matches.push({ index: match.index + 2, message: message.message, isError: message.isError });
+        matches.push({ index: match.index + 2, message: message.message, isError: message.isError, mdnUrl: issues[selector].mdn_url });
       }
     }
     

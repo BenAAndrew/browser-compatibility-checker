@@ -26,16 +26,26 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { b
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
     const matches = findIssues(text, issues, browsersToCheck, warnForOtherBrowsers);
-    const diagnostics = matches.map(({ index, message, isError }) => {
+    const diagnostics = matches.map(({ index, message, isError, mdnUrl }) => {
       const position = doc.positionAt(index);
       const range = new vscode.Range(position, position);
-      return new vscode.Diagnostic(
+      const diagnostic = new vscode.Diagnostic(
         range,
         message,
         isError
           ? vscode.DiagnosticSeverity.Error
           : vscode.DiagnosticSeverity.Warning,
       );
+      if(mdnUrl){
+        diagnostic.relatedInformation = [
+          new vscode.DiagnosticRelatedInformation(
+            new vscode.Location(vscode.Uri.parse(mdnUrl), range),
+            'MDN Documentation',
+          )
+        ];
+      }
+
+      return diagnostic;
     });
     const ws = vscode.workspace.getWorkspaceFolder(uri);
     const collection = vscode.languages.createDiagnosticCollection(
