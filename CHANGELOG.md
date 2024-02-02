@@ -16,3 +16,7 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 
 - Update logo
 - Update README
+
+## [1.0.2] - 2024-02-02
+
+- Update keywords & categories

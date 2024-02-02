@@ -1,7 +1,7 @@
 {
   "name": "browser-compatibility-checker",
   "displayName": "Browser compatibility checker",
-  "description": "Checks compatibility of your frontend code with modern browsers",
+  "description": "Checks compatibility of your HTML/CSS/JS with modern browsers. Uses MDN compatibility data to check for deprecated/mixed-support features.",
   "publisher": "benandrew",
   "icon": "icon.png",
   "version": "1.0.1",
@@ -13,7 +13,15 @@
     "vscode": "^1.85.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "browser compatibility",
+    "browser",
+    "code analysis",
+    "linting",
+    "mdn compatibility"
   ],
   "activationEvents": [
     "onStartupFinished"
