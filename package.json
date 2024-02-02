@@ -40,7 +40,20 @@
         },
         "browser-compatibility-checker.browserList": {
           "type": "array",
-          "default": ["chrome", "edge", "firefox", "opera", "safari", "ie", "chrome_android", "firefox_android", "opera_android", "safari_ios", "samsunginternet_android", "webview_android"],
+          "default": [
+            "chrome",
+            "edge",
+            "firefox",
+            "opera",
+            "safari",
+            "ie",
+            "chrome_android",
+            "firefox_android",
+            "opera_android",
+            "safari_ios",
+            "samsunginternet_android",
+            "webview_android"
+          ],
           "description": "Which browsers to check compatibility for"
         },
         "browser-compatibility-checker.warnForOtherBrowsers": {
@@ -50,7 +63,10 @@
         },
         "browser-compatibility-checker.foldersToIgnore": {
           "type": "array",
-          "default": ["**/node_modules/**", "**/.**/**"],
+          "default": [
+            "**/node_modules/**",
+            "**/.**/**"
+          ],
           "description": "Glob paths to exclude from scanning"
         }
       }
@@ -63,7 +79,7 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "format": "npx prettier . --write",
-    "test": "ts-mocha 'src/browser-compatibility-checker/test/*.spec.ts'",
+    "test": "mocha 'out/browser-compatibility-checker/test/*.spec.js'",
     "extension-test": "vscode-test"
   },
   "devDependencies": {
@@ -77,7 +93,6 @@
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
     "prettier": "3.2.4",
-    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
