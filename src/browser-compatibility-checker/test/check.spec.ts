@@ -117,4 +117,23 @@ describe("Find Issues", function () {
     );
     assert.deepStrictEqual(issues, []);
   });
+  it("Include MDN Url", function () {
+    const issues = findIssues(
+      readFileSync("sample_project/style.css", "utf8"),
+      {
+        "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"], mdn_url: "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y" },
+      },
+      ['chrome'],
+      true
+    );
+    assert.deepStrictEqual(issues, [
+      {
+        index: 190,
+        isError: false,
+        message:
+          "-webkit-mask-repeat-y may not be supported in the following browsers: IE",
+        mdnUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y"
+      },
+    ]);
+  });
 });

@@ -18,7 +18,7 @@ export function findIssues(
     if(message){
       let match;
       while ((match = regex.exec(text)) !== null) {
-        matches.push({ index: match.index + 2, message: message.message, isError: message.isError, mdnUrl: issues[selector].mdn_url });
+        matches.push({ index: match.index + 2, message: message.message, isError: message.isError, ...(issues[selector].mdn_url && {mdnUrl: issues[selector].mdn_url}) });
       }
     }
     
