@@ -1,4 +1,6 @@
 import bcd, { Identifier } from "@mdn/browser-compat-data";
+import fs from "fs";
+import path from "path";
 
 const CSS_GLOB = "**/*.{css,scss}";
 const HTML_GLOB = "**/*.html";
@@ -73,4 +75,10 @@ export function processCompatData() {
     [HTML_GLOB]: htmlCompatIssues,
     [JS_GLOB]: jsCompatIssues,
   };
+}
+
+export function createCompatFile() {
+  const jsonString = JSON.stringify(processCompatData(), null, 2);
+  const filePath = path.join(__filename, '../compat-issues.json');
+  fs.writeFileSync(filePath, jsonString, 'utf-8');
 }

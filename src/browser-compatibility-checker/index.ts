@@ -1,5 +1,5 @@
-import { processCompatData } from "./compat-issues";
+import { createCompatFile } from "./compat-issues";
+createCompatFile();
 
-export const compatIssues = processCompatData();
 export { findIssues } from "./check";
 export { CompatIssue } from "./compat-issues";

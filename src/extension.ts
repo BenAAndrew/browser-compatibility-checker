@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
 import {
   findIssues,
-  compatIssues,
   CompatIssue,
 } from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
 
+const compatIssues: { [path: string]: { [key: string]: CompatIssue} } = require('./browser-compatibility-checker/compat-issues.json');
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
 function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
