@@ -1,0 +1,13 @@
+body {
+  /* Following should be OK */
+  background: #ffffff;
+  font-family: "Source Sans Pro", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+}
+
+/* Following should be OK */
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("");
+}
