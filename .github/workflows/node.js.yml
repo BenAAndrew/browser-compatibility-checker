@@ -18,5 +18,18 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run compile
-    - run: npm test
-    - run: xvfb-run -a npm run extension-test
+    - name: Run CLI Command (expected to fail)
+      run: |
+        set +e
+        node out/cli.js -f sample_project
+        if [ $? -eq 0 ]; then
+          echo "Command succeeded unexpectedly"
+          exit 1
+        fi
+        echo "Command failed as expected"
+    - name: Run CLI Command (expected to pass)
+      run: node out/cli.js -f sample_project_2
+    - name: Run unit tests
+      run: npm test
+    - name: Run extension tests
+      run: xvfb-run -a npm run extension-test
