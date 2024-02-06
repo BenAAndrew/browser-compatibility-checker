@@ -112,6 +112,8 @@
   },
   "dependencies": {
     "@mdn/browser-compat-data": "^5.5.8",
+    "commander": "^12.0.0",
+    "kleur": "^4.1.5",
     "minimatch": "^9.0.3"
   }
 }
