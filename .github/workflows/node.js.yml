@@ -35,3 +35,24 @@ jobs:
       run: npm test
     - name: Run extension tests
       run: xvfb-run -a npm run extension-test
+  test-npm-package:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    - run: npm install browser-compatibility-checker
+    - name: Run CLI Command (expected to fail)
+      run: |
+        set +e
+        npx browser-compatibility-checker -f sample_project
+        if [ $? -eq 0 ]; then
+          echo "Command succeeded unexpectedly"
+          exit 1
+        fi
+        echo "Command failed as expected"
+    - name: Run CLI Command (expected to pass)
+      run: npx browser-compatibility-checker -f sample_project_2
