@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { program } from "commander";
 import { minimatch } from "minimatch";
 import { readFileSync, readdirSync } from "fs";
@@ -70,7 +72,7 @@ for (const [fileRegex, issues] of Object.entries(compatIssues)) {
 
 if (hasIssue) {
   console.log(
-    "Issues detected. Address these issues or change --targetBrowsers to ingore irrelavant browser issues"
+    "Issues detected. Address these issues or change --browsers to ingore irrelavant browser issues"
   );
   process.exit(1);
 } else {
