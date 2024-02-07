@@ -11,24 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18.x
         cache: 'npm'
     - run: npm ci
     - run: npm run compile
+    - name: Install package
+      run: npm i -g
     - name: Run CLI Command (expected to fail)
       run: |
         set +e
-        node out/cli.js -f sample_project
+        browser-compatibility-checker -f sample_project
         if [ $? -eq 0 ]; then
           echo "Command succeeded unexpectedly"
           exit 1
         fi
         echo "Command failed as expected"
     - name: Run CLI Command (expected to pass)
-      run: node out/cli.js -f sample_project_2
+      run: browser-compatibility-checker -f sample_project_2
     - name: Run unit tests
       run: npm test
     - name: Run extension tests
