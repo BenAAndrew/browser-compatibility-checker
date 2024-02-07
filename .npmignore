@@ -1,0 +1,15 @@
+sample_project/
+sample_project_2/
+*.test.*
+*.spec.*
+src/
+.vscode-test/
+.vscode/
+.github/
+*.png
+*.gif
+*.vsix
+.eslintrc.json
+.vscode-test.mjs
+.vscodeignore
+extension.*
