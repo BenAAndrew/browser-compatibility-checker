@@ -20,7 +20,8 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 
 ## CLI Tool
 
-`node out/cli.js`
+1. `npm i -g browser-compatibility-checker`
+2. `npx browser-compatibility-checker`
 
 ### Arguments
 
@@ -33,7 +34,9 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 
 1. `npm install`
 2. `npm run watch`
-3. Open VSCode & press F5 to run the extension
+3. Run:
+    - **VSCode extension**: Open VSCode & press F5 to run the extension
+    - **CLI tool**: `npm i -g`, then run with `browser-compatibility-checker`
 
 ## Disclaimer
 
