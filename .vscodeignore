@@ -1,11 +1,24 @@
+sample_project/
+sample_project_2/
+*.test.*
+*.spec.*
+**/test/**
 .vscode/**
 .vscode-test/**
 src/**
+.github/
+*.gif
+*.vsix
+.eslintrc.json
+.vscode-test.mjs
+.vscodeignore
 .gitignore
-.yarnrc
-vsc-extension-quickstart.md
+.npmignore
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
 **/*.ts
-**/.vscode-test.*
+
+# Packages
+node_modules/commander/**
+node_modules/kleur/**

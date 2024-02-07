@@ -20,3 +20,8 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 ## [1.0.2] - 2024-02-02
 
 - Update keywords & categories
+
+## [1.0.3] - 2024-02-07
+
+- Create CLI Tool
+- Reduce extension size
