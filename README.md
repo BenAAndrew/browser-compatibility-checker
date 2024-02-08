@@ -27,6 +27,7 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 
 - **-f, --folder**: Folder path to scan
 - **-b, --browsers**: Comma seperated list of browsers to check (defaults to all)
+- **-i, --ignore**: Comma seperated list of glob paths to ignore
 
 ## Local development
 
@@ -35,8 +36,8 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 1. `npm install`
 2. `npm run watch`
 3. Run:
-    - **VSCode extension**: Open VSCode & press F5 to run the extension
-    - **CLI tool**: `npm i -g`, then run with `browser-compatibility-checker`
+   - **VSCode extension**: Open VSCode & press F5 to run the extension
+   - **CLI tool**: `npm i -g`, then run with `browser-compatibility-checker`
 
 ## Disclaimer
 
