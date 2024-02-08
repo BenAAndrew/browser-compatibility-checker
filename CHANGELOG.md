@@ -25,3 +25,4 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 
 - Create CLI Tool
 - Reduce extension size
+- Exclude test & spec files by default

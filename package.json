@@ -73,7 +73,9 @@
           "type": "array",
           "default": [
             "**/node_modules/**",
-            "**/.**/**"
+            "**/.**/**",
+            "**/**.test.**",
+            "**/**.spec.**"
           ],
           "description": "Glob paths to exclude from scanning"
         },
