@@ -94,8 +94,8 @@ describe("Find Issues", function () {
       {
         "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
       },
-      ['chrome'],
-      true
+      ["chrome"],
+      true,
     );
     assert.deepStrictEqual(issues, [
       {
@@ -112,8 +112,8 @@ describe("Find Issues", function () {
       {
         "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
       },
-      ['chrome'],
-      false
+      ["chrome"],
+      false,
     );
     assert.deepStrictEqual(issues, []);
   });
@@ -121,10 +121,15 @@ describe("Find Issues", function () {
     const issues = findIssues(
       readFileSync("sample_project/style.css", "utf8"),
       {
-        "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"], mdn_url: "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y" },
+        "-webkit-mask-repeat-y:": {
+          deprecated: false,
+          browserIssues: ["ie"],
+          mdn_url:
+            "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y",
+        },
       },
-      ['chrome'],
-      true
+      ["chrome"],
+      true,
     );
     assert.deepStrictEqual(issues, [
       {
@@ -132,7 +137,8 @@ describe("Find Issues", function () {
         isError: false,
         message:
           "-webkit-mask-repeat-y may not be supported in the following browsers: IE",
-        mdnUrl: "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y"
+        mdnUrl:
+          "https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-mask-repeat-y",
       },
     ]);
   });

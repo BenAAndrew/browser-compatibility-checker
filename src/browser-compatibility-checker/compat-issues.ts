@@ -79,6 +79,6 @@ export function processCompatData() {
 
 export function createCompatFile() {
   const jsonString = JSON.stringify(processCompatData(), null, 2);
-  const filePath = path.join(__filename, '../compat-issues.json');
-  fs.writeFileSync(filePath, jsonString, 'utf-8');
+  const filePath = path.join(__filename, "../compat-issues.json");
+  fs.writeFileSync(filePath, jsonString, "utf-8");
 }

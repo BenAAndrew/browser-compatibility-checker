@@ -15,7 +15,12 @@ const BROWSER_NAMES: { [key: string]: string } = {
   webview_android: "Webview Android",
 };
 
-export function getMessage(name: string, issue: CompatIssue, browsersToCheck: string[] = [], warnForOtherBrowsers: boolean = true) {
+export function getMessage(
+  name: string,
+  issue: CompatIssue,
+  browsersToCheck: string[] = [],
+  warnForOtherBrowsers: boolean = true,
+) {
   const nameFormatted = name.replace(/[^a-zA-Z-]/g, "");
   if (issue.deprecated) {
     return {
@@ -24,11 +29,16 @@ export function getMessage(name: string, issue: CompatIssue, browsersToCheck: st
     };
   }
 
-  let browsers = browsersToCheck.length > 0 ? issue.browserIssues.filter(browser => browsersToCheck.includes(browser)) : issue.browserIssues;
+  let browsers =
+    browsersToCheck.length > 0
+      ? issue.browserIssues.filter((browser) =>
+          browsersToCheck.includes(browser),
+        )
+      : issue.browserIssues;
   let isError = true;
 
-  if(browsers.length === 0){
-    if(warnForOtherBrowsers){
+  if (browsers.length === 0) {
+    if (warnForOtherBrowsers) {
       browsers = issue.browserIssues;
       isError = false;
     } else {

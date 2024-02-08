@@ -1,32 +1,44 @@
 import * as vscode from "vscode";
-import {
-  findIssues,
-  CompatIssue,
-} from "./browser-compatibility-checker";
+import { findIssues, CompatIssue } from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
 
-const compatIssues: { [path: string]: { [key: string]: CompatIssue} } = require('./browser-compatibility-checker/compat-issues.json');
+const compatIssues: {
+  [path: string]: { [key: string]: CompatIssue };
+} = require("./browser-compatibility-checker/compat-issues.json");
 const collections: { [key: string]: vscode.DiagnosticCollection } = {};
 
 type Config = {
-  enableOnChange: boolean,
-  warnForOtherBrowsers: boolean,
-  useError: boolean,
-  browsersToCheck: string[],
-  foldersToIgnore: string[],
+  enableOnChange: boolean;
+  warnForOtherBrowsers: boolean;
+  useError: boolean;
+  browsersToCheck: string[];
+  foldersToIgnore: string[];
 };
 
-function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { browsersToCheck, foldersToIgnore, warnForOtherBrowsers, useError }: Config) {
+function checkFile(
+  file: vscode.Uri,
+  issues: { [key: string]: CompatIssue },
+  { browsersToCheck, foldersToIgnore, warnForOtherBrowsers, useError }: Config,
+) {
   const uri = vscode.Uri.file(file.path);
   if (collections[uri.toString()]) {
     collections[uri.toString()].delete(uri);
   }
-  if(foldersToIgnore.some(folder => minimatch(file.path, folder, { nocase: true }))){
+  if (
+    foldersToIgnore.some((folder) =>
+      minimatch(file.path, folder, { nocase: true }),
+    )
+  ) {
     return;
   }
   vscode.workspace.openTextDocument(file).then((doc) => {
     const text = doc.getText();
-    const matches = findIssues(text, issues, browsersToCheck, warnForOtherBrowsers);
+    const matches = findIssues(
+      text,
+      issues,
+      browsersToCheck,
+      warnForOtherBrowsers,
+    );
     const diagnostics = matches.map(({ index, message, isError, mdnUrl }) => {
       const position = doc.positionAt(index);
       const range = new vscode.Range(position, position);
@@ -37,12 +49,12 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { b
           ? vscode.DiagnosticSeverity.Error
           : vscode.DiagnosticSeverity.Warning,
       );
-      if(mdnUrl){
+      if (mdnUrl) {
         diagnostic.relatedInformation = [
           new vscode.DiagnosticRelatedInformation(
             new vscode.Location(vscode.Uri.parse(mdnUrl), range),
-            'MDN Documentation',
-          )
+            "MDN Documentation",
+          ),
         ];
       }
 
@@ -57,7 +69,7 @@ function checkFile(file: vscode.Uri, issues: { [key: string]: CompatIssue }, { b
   });
 }
 
-function scanFiles(config: Config){
+function scanFiles(config: Config) {
   for (const [fileRegex, issues] of Object.entries(compatIssues)) {
     vscode.workspace.findFiles(fileRegex).then((files) => {
       files.forEach((file) => checkFile(file, issues, config));
@@ -74,19 +86,21 @@ function scanFile(document: vscode.TextDocument, config: Config) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  const vscodeConfig = vscode.workspace.getConfiguration('browser-compatibility-checker');
+  const vscodeConfig = vscode.workspace.getConfiguration(
+    "browser-compatibility-checker",
+  );
   const config: Config = {
     enableOnChange: vscodeConfig.enableOnChange,
     warnForOtherBrowsers: vscodeConfig.warnForOtherBrowsers,
     useError: vscodeConfig.useError,
     browsersToCheck: vscodeConfig.browsersToCheck,
-    foldersToIgnore: vscodeConfig.foldersToIgnore
+    foldersToIgnore: vscodeConfig.foldersToIgnore,
   };
 
-  if(config.enableOnChange){
+  if (config.enableOnChange) {
     scanFiles(config);
   }
-  
+
   const checkAllFiles = vscode.commands.registerCommand(
     "browser-compatibility-checker.all-files",
     () => scanFiles(config),
@@ -104,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(checkCurrentFiles);
 
-  if(config.enableOnChange){
+  if (config.enableOnChange) {
     vscode.workspace.onDidChangeTextDocument((event) => {
       if (event.document.uri.scheme === "file") {
         scanFile(event.document, config);
