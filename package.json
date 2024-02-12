@@ -4,7 +4,7 @@
   "description": "Checks compatibility of your HTML/CSS/JS with modern browsers. Uses MDN compatibility data to check for deprecated/mixed-support features.",
   "publisher": "benandrew",
   "icon": "icon.png",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BenAAndrew/browser-compatibility-checker.git"

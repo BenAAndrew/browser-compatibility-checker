@@ -26,3 +26,8 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 - Create CLI Tool
 - Reduce extension size
 - Exclude test & spec files by default
+
+## [1.0.4] - 2024-02-12
+
+- Only generate JSON on compile
+- Update keywords
