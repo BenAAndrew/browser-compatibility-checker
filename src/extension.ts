@@ -1,5 +1,9 @@
 import * as vscode from "vscode";
-import { findIssues, CompatIssue } from "./browser-compatibility-checker";
+import {
+  findIssues,
+  CompatIssue,
+  getBrowsersList,
+} from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
 
 const compatIssues: {
@@ -89,11 +93,21 @@ export function activate(context: vscode.ExtensionContext) {
   const vscodeConfig = vscode.workspace.getConfiguration(
     "browser-compatibility-checker",
   );
+  let browsersToCheck = vscodeConfig.browsersToCheck;
+  if (vscode.workspace.workspaceFolders) {
+    const detectedBrowsersList = getBrowsersList(
+      vscode.workspace.workspaceFolders![0].uri.fsPath,
+    );
+    if (detectedBrowsersList && detectedBrowsersList.length > 0) {
+      vscode.window.showInformationMessage("Using detected browserslist");
+      browsersToCheck = detectedBrowsersList;
+    }
+  }
   const config: Config = {
     enableOnChange: vscodeConfig.enableOnChange,
     warnForOtherBrowsers: vscodeConfig.warnForOtherBrowsers,
     useError: vscodeConfig.useError,
-    browsersToCheck: vscodeConfig.browsersToCheck,
+    browsersToCheck,
     foldersToIgnore: vscodeConfig.foldersToIgnore,
   };
 

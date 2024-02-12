@@ -23,14 +23,14 @@ jobs:
       - name: Run CLI Command (expected to fail)
         run: |
           set +e
-          browser-compatibility-checker -f sample_project
+          browser-compatibility-checker -f sample_projects/sample_project
           if [ $? -eq 0 ]; then
             echo "Command succeeded unexpectedly"
             exit 1
           fi
           echo "Command failed as expected"
       - name: Run CLI Command (expected to pass)
-        run: browser-compatibility-checker -f sample_project_2
+        run: browser-compatibility-checker -f sample_projects/sample_project_2
       - name: Run unit tests
         run: npm test
       - name: Run extension tests
@@ -48,11 +48,11 @@ jobs:
       - name: Run CLI Command (expected to fail)
         run: |
           set +e
-          npx browser-compatibility-checker -f sample_project
+          npx browser-compatibility-checker -f sample_projects/sample_project
           if [ $? -eq 0 ]; then
             echo "Command succeeded unexpectedly"
             exit 1
           fi
           echo "Command failed as expected"
       - name: Run CLI Command (expected to pass)
-        run: npx browser-compatibility-checker -f sample_project_2
+        run: npx browser-compatibility-checker -f sample_projects/sample_project_2

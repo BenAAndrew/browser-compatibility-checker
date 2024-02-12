@@ -5,7 +5,7 @@ import { readFileSync } from "fs";
 describe("Find Issues", function () {
   it("Find CSS issues", function () {
     const issues = findIssues(
-      readFileSync("sample_project/style.css", "utf8"),
+      readFileSync("sample_projects/sample_project/style.css", "utf8"),
       {
         "-webkit-mask-repeat-y:": {
           deprecated: false,
@@ -47,7 +47,7 @@ describe("Find Issues", function () {
   });
   it("Find HTML issues", function () {
     const issues = findIssues(
-      readFileSync("sample_project/index.html", "utf8"),
+      readFileSync("sample_projects/sample_project/index.html", "utf8"),
       {
         "<center": { deprecated: true, browserIssues: [] },
         "is=": { deprecated: false, browserIssues: ["chrome"] },
@@ -68,7 +68,7 @@ describe("Find Issues", function () {
   });
   it("Find JS issues", function () {
     const issues = findIssues(
-      readFileSync("sample_project/script.js", "utf8"),
+      readFileSync("sample_projects/sample_project/script.js", "utf8"),
       {
         "VideoEncoder\\(": { deprecated: true, browserIssues: ["firefox"] },
         "InternalError\\(": { deprecated: false, browserIssues: ["chrome"] },
@@ -90,7 +90,7 @@ describe("Find Issues", function () {
   });
   it("Warning issue", function () {
     const issues = findIssues(
-      readFileSync("sample_project/style.css", "utf8"),
+      readFileSync("sample_projects/sample_project/style.css", "utf8"),
       {
         "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
       },
@@ -108,7 +108,7 @@ describe("Find Issues", function () {
   });
   it("Ignore excluded browsers", function () {
     const issues = findIssues(
-      readFileSync("sample_project/style.css", "utf8"),
+      readFileSync("sample_projects/sample_project/style.css", "utf8"),
       {
         "-webkit-mask-repeat-y:": { deprecated: false, browserIssues: ["ie"] },
       },
@@ -119,7 +119,7 @@ describe("Find Issues", function () {
   });
   it("Include MDN Url", function () {
     const issues = findIssues(
-      readFileSync("sample_project/style.css", "utf8"),
+      readFileSync("sample_projects/sample_project/style.css", "utf8"),
       {
         "-webkit-mask-repeat-y:": {
           deprecated: false,

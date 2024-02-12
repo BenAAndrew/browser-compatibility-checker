@@ -5,7 +5,11 @@ import { minimatch } from "minimatch";
 import { readFileSync, readdirSync } from "fs";
 import path from "path";
 import kleur from "kleur";
-import { findIssues, CompatIssue } from "./browser-compatibility-checker";
+import {
+  findIssues,
+  CompatIssue,
+  getBrowsersList,
+} from "./browser-compatibility-checker";
 const compatIssues: {
   [path: string]: { [key: string]: CompatIssue };
 } = require("./browser-compatibility-checker/compat-issues.json");
@@ -16,26 +20,28 @@ interface CliOptions {
   ignore: string[] | string;
 }
 
+const DEFAULT_BROWSERS = [
+  "chrome",
+  "edge",
+  "firefox",
+  "opera",
+  "safari",
+  "ie",
+  "chrome_android",
+  "firefox_android",
+  "opera_android",
+  "safari_ios",
+  "samsunginternet_android",
+  "webview_android",
+];
+
 program
   .description("Scan files for browser compatibility issues")
   .option("-f, --folder <folder>", "Folder to scan")
   .option(
     "-b, --browsers [browsers]",
     "Comma seperated list of browsers to check",
-    [
-      "chrome",
-      "edge",
-      "firefox",
-      "opera",
-      "safari",
-      "ie",
-      "chrome_android",
-      "firefox_android",
-      "opera_android",
-      "safari_ios",
-      "samsunginternet_android",
-      "webview_android",
-    ],
+    DEFAULT_BROWSERS,
   )
   .option(
     "-i, --ignore [ignore]",
@@ -45,14 +51,20 @@ program
 
 program.parse(process.argv);
 const { folder, browsers, ignore } = program.opts() as CliOptions;
-const browsersToCheck =
-  typeof browsers === "string" ? browsers.split(",") : browsers;
-const pathsToIgnore = typeof ignore === "string" ? ignore.split(",") : ignore;
 
 if (!folder) {
   console.error(kleur.red("No folder path provided."));
   process.exit(1);
 }
+
+const browsersList = getBrowsersList(folder);
+const browsersArg =
+  typeof browsers === "string" ? browsers.split(",") : browsers;
+const browsersToCheck =
+  browsersList && browsersList.length > 0 && browsersArg == DEFAULT_BROWSERS
+    ? browsersList
+    : browsersArg;
+const pathsToIgnore = typeof ignore === "string" ? ignore.split(",") : ignore;
 
 const files = readdirSync(folder, { recursive: true, encoding: "utf8" });
 console.log(`Scanning: ${folder} (${files.length} files)`);

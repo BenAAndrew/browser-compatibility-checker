@@ -1,5 +1,4 @@
-sample_project/
-sample_project_2/
+sample_projects/
 *.test.*
 *.spec.*
 **/test/**
