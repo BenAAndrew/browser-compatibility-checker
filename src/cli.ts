@@ -5,7 +5,11 @@ import { minimatch } from "minimatch";
 import { readFileSync, readdirSync } from "fs";
 import path from "path";
 import kleur from "kleur";
-import { findIssues, CompatIssue, getBrowsersList } from "./browser-compatibility-checker";
+import {
+  findIssues,
+  CompatIssue,
+  getBrowsersList,
+} from "./browser-compatibility-checker";
 const compatIssues: {
   [path: string]: { [key: string]: CompatIssue };
 } = require("./browser-compatibility-checker/compat-issues.json");
@@ -56,7 +60,10 @@ if (!folder) {
 const browsersList = getBrowsersList(folder);
 const browsersArg =
   typeof browsers === "string" ? browsers.split(",") : browsers;
-const browsersToCheck = browsersList && browsersList.length > 0 && browsersArg == DEFAULT_BROWSERS ? browsersList : browsersArg;
+const browsersToCheck =
+  browsersList && browsersList.length > 0 && browsersArg == DEFAULT_BROWSERS
+    ? browsersList
+    : browsersArg;
 const pathsToIgnore = typeof ignore === "string" ? ignore.split(",") : ignore;
 
 const files = readdirSync(folder, { recursive: true, encoding: "utf8" });
