@@ -21,7 +21,12 @@
     "browser",
     "code analysis",
     "linting",
-    "mdn compatibility"
+    "mdn",
+    "browser-compat-data",
+    "compatibility",
+    "checker",
+    "browserslist",
+    "caniuse"
   ],
   "activationEvents": [
     "onStartupFinished"
