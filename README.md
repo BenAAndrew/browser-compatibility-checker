@@ -4,7 +4,7 @@ A tool for analyzing frontend code to find browser compatibility issues powered 
 
 - Scans HTML, CSS & JS files for compatibility issues
 - Reports both deprecated & mixed-support features
-- Supports configuration of target browsers
+- Supports configuration of target browsers (including browserslist)
 
 ## VSCode Extension
 
