@@ -27,6 +27,9 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "bin": {
+    "browser-compatibility-checker": "./out/cli.js"
+  },
   "contributes": {
     "commands": [
       {
@@ -90,6 +93,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
+    "postcompile": "node out/browser-compatibility-checker/compat-issues.js",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
@@ -97,9 +101,6 @@
     "test": "mocha 'out/browser-compatibility-checker/test/*.spec.js'",
     "extension-test": "vscode-test",
     "publish-extension": "vsce package && vsce publish"
-  },
-  "bin": {
-    "browser-compatibility-checker": "./out/index.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
