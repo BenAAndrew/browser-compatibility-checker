@@ -35,3 +35,7 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 ## [1.1.0] - 2024-02-12
 
 - Add browserslist support
+
+## [1.1.1] - 2024-02-12
+
+- Remove redundant files
