@@ -31,3 +31,7 @@ All notable changes to the "browser-compatibility-checker" extension will be doc
 
 - Only generate JSON on compile
 - Update keywords
+
+## [1.1.0] - 2024-02-12
+
+- Add browserslist support
