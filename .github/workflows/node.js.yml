@@ -43,8 +43,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: "npm"
       - run: npm install browser-compatibility-checker
+      - run: npm list browser-compatibility-checker
       - name: Run CLI Command (expected to fail)
         run: |
           set +e
