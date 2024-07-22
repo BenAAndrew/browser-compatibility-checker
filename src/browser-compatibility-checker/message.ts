@@ -1,6 +1,6 @@
 import { CompatIssue } from "./compat-issues";
 
-const BROWSER_NAMES: { [key: string]: string } = {
+export const BROWSER_NAMES: { [key: string]: string } = {
   chrome: "Chrome",
   edge: "Edge",
   firefox: "Firefox",

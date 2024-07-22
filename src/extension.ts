@@ -5,6 +5,7 @@ import {
   getBrowsersList,
 } from "./browser-compatibility-checker";
 import { minimatch } from "minimatch";
+import { BROWSER_NAMES } from "./browser-compatibility-checker/message";
 
 const compatIssues: {
   [path: string]: { [key: string]: CompatIssue };
@@ -93,14 +94,16 @@ export function activate(context: vscode.ExtensionContext) {
   const vscodeConfig = vscode.workspace.getConfiguration(
     "browser-compatibility-checker",
   );
-  let browsersToCheck = vscodeConfig.browsersToCheck;
+  let browsersToCheck: string[] = vscodeConfig.browserList;
   if (vscode.workspace.workspaceFolders) {
     const detectedBrowsersList = getBrowsersList(
       vscode.workspace.workspaceFolders![0].uri.fsPath,
     );
     if (detectedBrowsersList && detectedBrowsersList.length > 0) {
-      vscode.window.showInformationMessage("Using detected browserslist");
+      vscode.window.showInformationMessage(`Using detected browserslist: ${detectedBrowsersList.map(x => BROWSER_NAMES[x] || x).join(', ')}`);
       browsersToCheck = detectedBrowsersList;
+    } else {
+      vscode.window.showInformationMessage(`Using browser list: ${browsersToCheck.map(x => BROWSER_NAMES[x] || x).join(', ')}`);
     }
   }
   const config: Config = {
